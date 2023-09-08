@@ -1,0 +1,103 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Mimoja <git@mimoja.de>
+Date: Tue, 5 Sep 2023 16:07:55 +0000
+Subject: Patching u-boot imx8m variscite configs to allow for armbian style
+ dtb paths
+
+Signed-off-by: Mimoja <git@mimoja.de>
+---
+ include/configs/imx8mm_var_dart.h | 2 +-
+ include/configs/imx8mn_var_som.h  | 2 +-
+ include/configs/imx8mp_var_dart.h | 2 +-
+ include/configs/imx8mq_var_dart.h | 2 +-
+ include/configs/imx93_var_som.h   | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/include/configs/imx8mm_var_dart.h b/include/configs/imx8mm_var_dart.h
+index 9368674a36..ea103f304b 100644
+--- a/include/configs/imx8mm_var_dart.h
++++ b/include/configs/imx8mm_var_dart.h
+@@ -128,11 +128,11 @@
+ 				"fi; " \
+ 			"fi; " \
+ 		"fi; \0" \
+ 	"loadfdt=run findfdt; " \
+ 		"echo fdt_file=${fdt_file}; " \
+-		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/${fdt_file}\0" \
++		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/dtb/freescale/${fdt_file}\0" \
+ 	"ramsize_check="\
+ 		"if test $sdram_size -le 512; then " \
+ 			"setenv cma_size cma=320M; " \
+ 		"else " \
+ 			"if test $sdram_size -le 1024; then " \
+diff --git a/include/configs/imx8mn_var_som.h b/include/configs/imx8mn_var_som.h
+index 69b10293a4..b2c5485d15 100644
+--- a/include/configs/imx8mn_var_som.h
++++ b/include/configs/imx8mn_var_som.h
+@@ -131,11 +131,11 @@
+ 		"if test $fdt_file = undefined; then " \
+ 			"setenv fdt_file imx8mn-var-som-symphony.dtb; " \
+ 		"fi; \0" \
+ 	"loadfdt=run findfdt; " \
+ 		"echo fdt_file=${fdt_file}; " \
+-		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${bootdir}/${fdt_file}\0" \
++		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${bootdir}/dtb/freescale/${fdt_file}\0" \
+ 	"ramsize_check="\
+ 		"if test $sdram_size -le 512; then " \
+ 			"setenv cma_size cma=320M; " \
+ 		"else " \
+ 			"setenv cma_size cma=576M; " \
+diff --git a/include/configs/imx8mp_var_dart.h b/include/configs/imx8mp_var_dart.h
+index 19e877cb5a..ffd241f4b4 100644
+--- a/include/configs/imx8mp_var_dart.h
++++ b/include/configs/imx8mp_var_dart.h
+@@ -134,11 +134,11 @@
+ 				"fi; " \
+ 			"fi; " \
+ 		"fi; \0" \
+ 	"loadfdt=run findfdt; " \
+ 		"echo fdt_file=${fdt_file}; " \
+-		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/${fdt_file}\0" \
++		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${bootdir}/dtb/freescale/${fdt_file}\0" \
+ 	"ramsize_check="\
+ 		"if test $sdram_size -le 512; then " \
+ 			"setenv cma_size cma=320M; " \
+ 		"else " \
+ 			"if test $sdram_size -le 1024; then " \
+diff --git a/include/configs/imx8mq_var_dart.h b/include/configs/imx8mq_var_dart.h
+index 701fd2debe..f46750682f 100644
+--- a/include/configs/imx8mq_var_dart.h
++++ b/include/configs/imx8mq_var_dart.h
+@@ -138,11 +138,11 @@
+ 				"setenv fdt_file imx8mq-var-dart-dt8mcustomboard.dtb; " \
+ 			"fi; " \
+ 		"fi; \0" \
+ 	"loadfdt=run findfdt; " \
+ 		"echo fdt_file=${fdt_file}; " \
+-		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${bootdir}/${fdt_file}\0" \
++		"load mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${bootdir}/dtb/freescale/${fdt_file}\0" \
+ 	"mmcboot=echo Booting from mmc ...; " \
+ 		"run mmcargs; " \
+ 		"run optargs; " \
+ 		"if test ${boot_fdt} = yes || test ${boot_fdt} = try; then " \
+ 			"if run loadfdt; then " \
+diff --git a/include/configs/imx93_var_som.h b/include/configs/imx93_var_som.h
+index fffeaa5c48..d8691ba185 100644
+--- a/include/configs/imx93_var_som.h
++++ b/include/configs/imx93_var_som.h
+@@ -91,11 +91,11 @@
+ 	"findfdt=" \
+ 		"if test $fdt_file = undefined; then " \
+ 			"setenv fdt_file "CONFIG_DEFAULT_FDT_FILE"; " \
+ 		"fi; " \
+ 		"echo fdt_file=${fdt_file};\0" \
+-	"loadfdt=run findfdt;load mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${bootdir}/${fdt_file}\0" \
++	"loadfdt=run findfdt;load mmc ${mmcdev}:${mmcpart} ${fdt_addr_r} ${bootdir}/dtb/freescale/${fdt_file}\0" \
+ 	"loadcntr=fatload mmc ${mmcdev}:${mmcpart} ${cntr_addr} ${cntr_file}\0" \
+ 	"auth_os=auth_cntr ${cntr_addr}\0" \
+ 	"boot_os=booti ${loadaddr} - ${fdt_addr_r};\0" \
+ 	"mmcboot=echo Booting from mmc ...; " \
+ 		"run mmcargs; " \
+-- 
+Created with Armbian build tools https://github.com/armbian/build
+
